@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
+import * as helmetModule from 'helmet';
+const helmet = helmetModule.default;
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/errorHandler.js';
