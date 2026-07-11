@@ -1,7 +1,7 @@
 // src/app.ts
 import express from "express";
 import cors from "cors";
-import helmet from "helmet";
+import * as helmetModule from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
@@ -994,6 +994,7 @@ router7.delete("/categories/:id", authenticate, authorize("ADMIN"), deleteCatego
 var admin_routes_default = router7;
 
 // src/app.ts
+var helmet = helmetModule.default;
 var app = express();
 app.use(helmet());
 app.use(cors());
