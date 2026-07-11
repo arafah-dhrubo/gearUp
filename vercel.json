@@ -1,3 +1,4 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+  "installCommand": "npm install && npx prisma generate",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }
