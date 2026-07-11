@@ -1,4 +1,4 @@
-import { prisma } from '../../utils/prisma.js';
+import { prisma, Prisma } from '../../utils/prisma.js';
 import { AppError } from '../../middleware/errorHandler.js';
 import { config } from '../../config/index.js';
 import Stripe from 'stripe';
@@ -33,7 +33,7 @@ export const createPaymentIntent = async (userId: string, rentalOrderId: string)
   if (rental.customerId !== userId) throw new AppError('Not authorized', 403);
   if (rental.status !== 'CONFIRMED') throw new AppError('Order must be confirmed before payment', 400);
 
-  const existingPayment = rental.payments.find(p => p.status === 'PENDING' || p.status === 'COMPLETED');
+  const existingPayment = rental.payments.find((p: { status: string }) => p.status === 'PENDING' || p.status === 'COMPLETED');
   if (existingPayment) throw new AppError('Payment already exists for this order', 400);
 
   const amountInCents = Math.round(rental.totalAmount * 100);
