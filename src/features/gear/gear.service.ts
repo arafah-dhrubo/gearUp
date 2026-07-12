@@ -15,8 +15,8 @@ export const getGear = async (filters: {
   }
   if (filters.minPrice || filters.maxPrice) {
     where.pricePerDay = {};
-    if (filters.minPrice) where.pricePerDay.gte = filters.minPrice;
-    if (filters.maxPrice) where.pricePerDay.lte = filters.maxPrice;
+    if (filters.minPrice) where.pricePerDay.gte = Number(filters.minPrice);
+    if (filters.maxPrice) where.pricePerDay.lte = Number(filters.maxPrice);
   }
   if (filters.available === 'true') where.available = true;
 

@@ -1,0 +1,1096 @@
+{
+  "info": {
+    "_postman_id": "8b5f3964-b524-4f40-8abf-e9db5a1e7cd1",
+    "name": "GearUp API",
+    "description": "API collection for GearUp sports and outdoor rental platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Registration successful', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.user.role).to.eql('CUSTOMER');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newcustomer@gearup.com\",\n  \"password\": \"Customer@123\",\n  \"name\": \"New Customer\",\n  \"phone\": \"+1234567890\",\n  \"role\": \"CUSTOMER\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Provider",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Registration successful', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.user.role).to.eql('PROVIDER');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newprovider@gearup.com\",\n  \"password\": \"Provider@123\",\n  \"name\": \"New Provider\",\n  \"phone\": \"+1987654321\",\n  \"role\": \"PROVIDER\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login successful', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.environment.set('customerToken', json.data.token);",
+                  "    pm.environment.set('customerId', json.data.user.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@gearup.com\",\n  \"password\": \"Customer@123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Provider",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login successful', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.environment.set('providerToken', json.data.token);",
+                  "    pm.environment.set('providerId', json.data.user.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"provider@gearup.com\",\n  \"password\": \"Provider@123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login successful', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.environment.set('adminToken', json.data.token);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@gearup.com\",\n  \"password\": \"Admin@123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns user profile', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var user = pm.response.json().data;",
+                  "    pm.expect(user).to.have.property('id');",
+                  "    pm.expect(user).to.have.property('role');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Gear (Public)",
+      "item": [
+        {
+          "name": "Health Check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is ok', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().status).to.eql('ok');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Browse All Gear",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns gear list', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "    pm.expect(data.length).to.be.above(0);",
+                  "    pm.environment.set('gearId', data[0].id);",
+                  "    pm.environment.set('categoryId', data[0].category.id);",
+                  "    if (!pm.environment.get('gearId')) {",
+                  "        pm.environment.set('gearId', 'seed-mountain-bike-pro');",
+                  "    }",
+                  "    if (!pm.environment.get('categoryId')) {",
+                  "        pm.environment.set('categoryId', 'cmrge58m10003cfuuaut1e7dl');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gear",
+              "host": ["{{baseUrl}}"],
+              "path": ["gear"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Browse Gear with Filters",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns filtered gear', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gear?category=&search=mountain&minPrice=20&maxPrice=50&available=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["gear"],
+              "query": [
+                { "key": "category", "value": "" },
+                { "key": "search", "value": "mountain" },
+                { "key": "minPrice", "value": "20" },
+                { "key": "maxPrice", "value": "50" },
+                { "key": "available", "value": "true" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gear Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns gear details', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.have.property('id');",
+                  "    pm.expect(data).to.have.property('name');",
+                  "    pm.expect(data).to.have.property('category');",
+                  "    pm.expect(data).to.have.property('provider');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gear/{{gearId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["gear", "{{gearId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns categories', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "    pm.expect(data.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Rental Orders",
+      "item": [
+        {
+          "name": "Create Rental Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Rental created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.environment.set('rentalOrderId', json.data.id);",
+                  "    pm.expect(json.data.status).to.eql('PLACED');",
+                  "});",
+                  "if (!pm.environment.get('gearId')) {",
+                  "    pm.environment.set('gearId', 'seed-mountain-bike-pro');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startDate\": \"2026-07-15T00:00:00Z\",\n  \"endDate\": \"2026-07-20T00:00:00Z\",\n  \"note\": \"Weekend trip rental\",\n  \"items\": [\n    {\n      \"gearItemId\": \"{{gearId}}\",\n      \"quantity\": 1\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": ["{{baseUrl}}"],
+              "path": ["rentals"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Rentals",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns rental list', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": ["{{baseUrl}}"],
+              "path": ["rentals"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Rental Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns rental details', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.have.property('id');",
+                  "    pm.expect(data).to.have.property('status');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rentals/{{rentalOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["rentals", "{{rentalOrderId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment Intent",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Payment intent created', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.environment.set('paymentIntentId', json.data.paymentIntentId);",
+                  "    pm.environment.set('clientSecret', json.data.clientSecret);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rentalOrderId\": \"{{rentalOrderId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Payment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Payment confirmed', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentIntentId\": \"{{paymentIntentId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/confirm",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "confirm"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns payment history', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "    if (data.length > 0) {",
+                  "        pm.environment.set('paymentId', data[0].id);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns payment details', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.have.property('id');",
+                  "    pm.expect(data).to.have.property('amount');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/{{paymentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "{{paymentId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Provider Management",
+      "item": [
+        {
+          "name": "Add Gear Listing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Gear added', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.environment.set('providerGearId', json.data.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{providerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Bike\",\n  \"description\": \"Test bike for rental\",\n  \"brand\": \"TestBrand\",\n  \"pricePerDay\": 40,\n  \"quantity\": 2,\n  \"categoryId\": \"{{categoryId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/gear",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider", "gear"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Gear Listing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Gear updated', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{providerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pricePerDay\": 50,\n  \"quantity\": 5\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/gear/{{providerGearId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider", "gear", "{{providerGearId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Gear Listing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Gear deleted', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{providerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/gear/{{providerGearId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider", "gear", "{{providerGearId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Provider Orders",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns provider orders', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "    if (data.length > 0) {",
+                  "        pm.environment.set('providerOrderId', data[0].id);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{providerToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider", "orders"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status (Provider)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Order status updated', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{providerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONFIRMED\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/orders/{{rentalOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["provider", "orders", "{{rentalOrderId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Create Review",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Review created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{customerToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gearItemId\": \"{{gearId}}\",\n  \"rating\": 5,\n  \"comment\": \"Great gear, highly recommend!\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["reviews"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Management",
+      "item": [
+        {
+          "name": "Get All Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns user list', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "    pm.expect(data.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users by Role",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns filtered users', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users?role=CUSTOMER",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "users"],
+              "query": [{ "key": "role", "value": "CUSTOMER" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Suspend User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('User suspended', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{customerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "users", "{{customerId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Activate User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('User activated', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{customerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "users", "{{customerId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Gear",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns all gear', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/gear",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "gear"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Rentals",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns all rentals', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var data = pm.response.json().data;",
+                  "    pm.expect(data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/rentals",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "rentals"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api", "type": "string" },
+    { "key": "customerToken", "value": "", "type": "string" },
+    { "key": "providerToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "customerId", "value": "", "type": "string" },
+    { "key": "gearId", "value": "seed-mountain-bike-pro", "type": "string" },
+    { "key": "categoryId", "value": "cmrge58m10003cfuuaut1e7dl", "type": "string" },
+    { "key": "rentalOrderId", "value": "", "type": "string" },
+    { "key": "paymentIntentId", "value": "", "type": "string" },
+    { "key": "clientSecret", "value": "", "type": "string" },
+    { "key": "paymentId", "value": "", "type": "string" },
+    { "key": "providerGearId", "value": "", "type": "string" },
+    { "key": "providerOrderId", "value": "", "type": "string" },
+    { "key": "stripePublishableKey", "value": "pk_test_51TqzEUAJrDGsk00XkVXLIiwTE9ftO2KcF4Y2N8KiCHgdtDBwG1K45etLRVXt3SsFbssDis7CtNiHiMGYI8JxlZuy00EXttxBIc", "type": "string" }
+  ]
+}

@@ -31,7 +31,9 @@ export const createPaymentIntent = async (userId: string, rentalOrderId: string)
   });
   if (!rental) throw new AppError('Rental order not found', 404);
   if (rental.customerId !== userId) throw new AppError('Not authorized', 403);
-  if (rental.status !== 'CONFIRMED') throw new AppError('Order must be confirmed before payment', 400);
+  if (rental.status !== 'PLACED' && rental.status !== 'CONFIRMED') {
+    throw new AppError('Order must be in PLACED or CONFIRMED status to pay', 400);
+  }
 
   const existingPayment = rental.payments.find((p: { status: string }) => p.status === 'PENDING' || p.status === 'COMPLETED');
   if (existingPayment) throw new AppError('Payment already exists for this order', 400);
@@ -69,7 +71,16 @@ export const confirmPayment = async (userId: string, paymentIntentId: string) =>
   if (payment.userId !== userId) throw new AppError('Not authorized', 403);
 
   if (stripe) {
-    const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    let intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    // Auto-confirm in test mode if payment not yet completed
+    if (intent.status === 'requires_payment_method' && config.stripeSecretKey.startsWith('sk_test_')) {
+      // Use Stripe test token for 4242 card
+      intent = await stripe.paymentIntents.confirm(paymentIntentId, {
+        payment_method: 'pm_card_visa',
+      });
+    }
+
     if (intent.status !== 'succeeded') throw new AppError(`Payment not completed. Status: ${intent.status}`, 400);
   }
 

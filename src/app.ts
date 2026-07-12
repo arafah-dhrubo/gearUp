@@ -39,7 +39,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.all('/{*path}', (_req, res) => {
-  res.status(404).json({ success: false, message: 'Route not found' });
+  res.status(404).json({ success: false, message: 'Route not found', errorDetails: null });
 });
 
 app.use(errorHandler);

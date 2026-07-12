@@ -6,7 +6,7 @@ import { AuthRequest } from '../types/index.js';
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   const header = req.headers.authorization;
   if (!header?.startsWith('Bearer ')) {
-    return res.status(401).json({ success: false, message: 'No token provided' });
+    return res.status(401).json({ success: false, message: 'No token provided', errorDetails: null });
   }
 
   const token = header.split(' ')[1];
@@ -15,13 +15,13 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     req.user = decoded;
     next();
   } catch {
-    return res.status(401).json({ success: false, message: 'Invalid or expired token' });
+    return res.status(401).json({ success: false, message: 'Invalid or expired token', errorDetails: null });
   }
 };
 
 export const authorize = (...roles: string[]) => (req: AuthRequest, res: Response, next: NextFunction) => {
   if (!req.user || !roles.includes(req.user.role)) {
-    return res.status(403).json({ success: false, message: 'Insufficient permissions' });
+    return res.status(403).json({ success: false, message: 'Insufficient permissions', errorDetails: null });
   }
   next();
 };

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import pg from 'pg';
 import { PrismaClient } from '../src/generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const url = new URL(process.env.DATABASE_URL!);
 const ssl = url.searchParams.get('sslmode') === 'require' ? { rejectUnauthorized: false } : undefined;

@@ -14,7 +14,6 @@ export const createRental = async (customerId: string, data: { startDate: string
   for (const item of data.items) {
     const gear = await prisma.gearItem.findUnique({ where: { id: item.gearItemId } });
     if (!gear) throw new AppError(`Gear ${item.gearItemId} not found`, 404);
-    if (!gear.available || gear.quantity < item.quantity) throw new AppError(`Insufficient stock: ${gear.name}`, 400);
 
     totalAmount += gear.pricePerDay * days * item.quantity;
     rentalItems.push({ gearItemId: item.gearItemId, quantity: item.quantity });
@@ -22,9 +21,16 @@ export const createRental = async (customerId: string, data: { startDate: string
 
   const rental = await prisma.$transaction(async (tx) => {
     for (const item of data.items) {
+      const gear = await tx.gearItem.findUnique({ where: { id: item.gearItemId } });
+      if (!gear) throw new AppError(`Gear ${item.gearItemId} not found`, 404);
+      if (!gear.available || gear.quantity < item.quantity) {
+        throw new AppError(`Insufficient stock: ${gear.name}`, 400);
+      }
+
+      const newQty = gear.quantity - item.quantity;
       await tx.gearItem.update({
         where: { id: item.gearItemId },
-        data: { quantity: { decrement: item.quantity }, available: true },
+        data: { quantity: newQty, available: newQty > 0 },
       });
     }
 

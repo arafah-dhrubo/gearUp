@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stripe Test Payment</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+    .form-group { margin: 15px 0; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input, button { width: 100%; padding: 10px; font-size: 16px; }
+    button { background: #5469d4; color: white; border: none; cursor: pointer; }
+    button:hover { background: #4a56b8; }
+    .result { margin-top: 20px; padding: 15px; background: #f5f5f5; }
+    .success { background: #d4edda; border: 1px solid #c3e6cb; }
+    .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+  </style>
+</head>
+<body>
+  <h1>Stripe Test Payment</h1>
+  
+  <div class="form-group">
+    <label>Stripe Publishable Key</label>
+    <input type="text" id="publishableKey" placeholder="pk_test_..." />
+  </div>
+  
+  <div class="form-group">
+    <label>Client Secret (from Create Payment Intent response)</label>
+    <input type="text" id="clientSecret" placeholder="pi_xxx_secret_xxx" />
+  </div>
+  
+  <div class="form-group">
+    <label>Test Card Number</label>
+    <input type="text" id="cardNumber" value="4242424242424242" />
+  </div>
+  
+  <div class="form-group">
+    <label>Expiry</label>
+    <input type="text" id="cardExpiry" value="12/34" />
+  </div>
+  
+  <div class="form-group">
+    <label>CVC</label>
+    <input type="text" id="cardCvc" value="123" />
+  </div>
+  
+  <button onclick="processPayment()">Pay $1.00</button>
+  
+  <div id="result" class="result" style="display: none;"></div>
+
+  <script>
+    async function processPayment() {
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result';
+      resultDiv.innerHTML = 'Processing...';
+      
+      try {
+        const stripe = Stripe(document.getElementById('publishableKey').value);
+        const elements = stripe.elements();
+        
+        const card = elements.create('card', {
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#32325d',
+            },
+          },
+        });
+        
+        // Use test card details
+        const { error, paymentIntent } = await stripe.confirmCardPayment(
+          document.getElementById('clientSecret').value,
+          {
+            payment_method: {
+              card: {
+                number: document.getElementById('cardNumber').value,
+                exp_month: parseInt(document.getElementById('cardExpiry').value.split('/')[0]),
+                exp_year: parseInt('20' + document.getElementById('cardExpiry').value.split('/')[1]),
+                cvc: document.getElementById('cardCvc').value,
+              },
+            },
+          }
+        );
+        
+        if (error) {
+          resultDiv.className = 'result error';
+          resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+        } else if (paymentIntent.status === 'succeeded') {
+          resultDiv.className = 'result success';
+          resultDiv.innerHTML = `
+            <strong>Payment Successful!</strong><br>
+            Payment Intent ID: ${paymentIntent.id}<br>
+            Status: ${paymentIntent.status}<br><br>
+            <em>Now call POST /api/payments/confirm with this paymentIntentId to complete the flow.</em>
+          `;
+        }
+      } catch (err) {
+        resultDiv.className = 'result error';
+        resultDiv.innerHTML = `<strong>Error:</strong> ${err.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
